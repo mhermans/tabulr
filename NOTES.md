@@ -6,6 +6,15 @@ tab1 <- svytable()
 caption(tab1) <- 'Tabel caption'
 
 
+caption 		# col onder of boven toevoegen, spanning?
+row.margin 		# col rechts toevoegen
+col.margin 		# row onder toevoegen
+comment			# row onder toevoegen [italic?)
+
+write.tabular.xlsx <- function(wb, coords, tabular, caption, margins, comment) {
+
+}
+
 Two dimensional tabular datastructures:
 
 * data.frame
@@ -80,6 +89,8 @@ labels list of
 -> if global default lang is set set in document, use system lang setting
 -> if selected language is undefined => error or warning with fallback to other lang?
 
+
+print.tabulr 
 
 
 Standard tabular forms in Excel rapport Liagre:

@@ -6,7 +6,10 @@ tab1 <- svytable()
 caption(tab1) <- 'Tabel caption'
 
 
-
+# toprule
+# midrule
+# bottomrule
+# 
 
 Two dimensional tabular datastructures:
 

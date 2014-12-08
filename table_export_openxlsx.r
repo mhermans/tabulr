@@ -164,21 +164,17 @@ wb <- print.tabular.xlsx(wb, sheet='OR_tables', coords=c(1,1), tabular=t.wg.cent
 wb <- print.tabular.xlsx(wb, 'OR_tables', c(1, nrow(t.wg.centrale)+4), t.hhr.centrale)
 openXL(wb)
 
-# TODO store table coords on wb object (per sheet)?
 
-# print.tabular.xlsx()
-# print.tabular.tex()
-# print.tabular.md()
-#
-# write.tabular.list.xlsx <- function(wb, tables) {
-#   
-# }
-# 
-# add.strings(tabular, 'nl') <- [caption, col/row names, comment]
-# get.strings(tabular, 'nl')
-
-
-# toprule
-# midrule
-# bottomrule
-# 
+last_filled_row <- function(wb, sheet_number) {
+  # returns the indexnumber of the last row with data on it
+  # returns 0 if no rows contain data
+  
+  sheet_data <- wb$sheetData[[sheet_number]]
+  if (length(sheet_data) == 0 ) {
+    max_row <- 0
+  }else{
+    max_row <- max(as.integer(names(sheet_data)))  
+  }
+  
+  max_row
+}

@@ -1,78 +1,20 @@
 library(openxlsx)
 
-wd <- getwd()
-setwd('C:/Users/MaartenH/Documents/work/HIVA/acv_or')
-load('rapportering/descr_tables.RData')
-setwd(wd)
-rm(wd)
 
-#write.xlsx(t.wg.centrale, file = "writeXLSXTable1.xlsx", asTable = TRUE) # error, geen data.frame
-
-# options: simple data, or automatically formatedd as a table
-# write.xlsx(tab, file = "OR1_descr_tables.xlsx", asTable = TRUE, # issue, "row.name"s als colname
-#            col.names=TRUE, row.names=TRUE) 
-
-
-# General styling
-# ---------------
-
-# make custom table header style
-hs1 <- createStyle(fgFill = "#DCE6F1", halign = "CENTER", 
-                   textDecoration = "Italic", border = "Bottom")
-
-# stel algemene stijlelementen in
-options("openxlsx.borderColour" = "#4F80BD")
-options("openxlsx.borderStyle" = "thin")
-
-
-# Setup workbook, sheet
-# ---------------------
-
-wb <- createWorkbook()
-sheet_name <- 'OR_tables'
-addWorksheet(wb = wb, sheetName = sheet_name)
-setColWidths(wb, sheet = 1, cols=1:100, widths = "auto") # set cols to automatically resize
-
-# write multiple tables in single sheet
-# -------------------------------------
-
-# Table 1: cbind()'ed table
-
-tab <- as.data.frame(t.wg.centrale) # omzetten naar dataframe
-class(tab[,3] ) <- "percentage"
-  
-coords <- c(1,1)
-writeData(wb = wb, sheet = sheet_name, x = tab, xy=coords,
-          borders = "surrounding", rowNames=TRUE, headerStyle = hs1, borderStyle = "dashed")
-
-# Table 2: svytable()
-
-tab <- as.data.frame.matrix(t.hhr.centrale)
-
-coords <- c(1,nrow(tab) + 3) # hoogte tab 1 + 3 rows => 1 spatie
-writeData(wb = wb, 
-          sheet = sheet_name, x = tab, 
-          xy=coords,
-          borders = "surrounding", rowNames=TRUE, headerStyle = hs1, borderStyle = "dashed")
-
-
-openXL(wb) # toon excel bestand zonder weg te schrijven
-
-saveWorkbook(wb, "OR1_descr_tables.xlsx", overwrite = TRUE)
-
-# TODO wat is een header/footer?
-
+# GENERAL AND HELPER FUNCTIONS #
+# ============================ #
 
 
 # basis-elementen die rondom de data geplaatst worden
 #
-# * caption   	  # col onder of boven toevoegen, spanning?
+# * caption       # col onder of boven toevoegen, spanning?
 # * row.margin 		# col rechts toevoegen
 # * col.margin 		# row onder toevoegen
 # * comment			  # row onder toevoegen [italic?)
 
 print.tabular.xlsx <- function(wb, sheet, coords, tabular, 
-                               add.caption=FALSE, add.row.margin=FALSE, add.col.margin=FALSE, add.comment=FALSE, 
+                               add.caption=FALSE, add.comment=FALSE, 
+                               add.row.margin=FALSE, add.col.margin=FALSE,
                                style=None) {
   
   # make sure the object is a data.frame, convert if needed
@@ -89,7 +31,7 @@ print.tabular.xlsx <- function(wb, sheet, coords, tabular,
   n_data_cols <- ncol(tabular)
   #n_total_cols <- 
   #n_total_rows <- 
-
+  
   # if caption, start the table one row lower
   if (add.caption) { start_r <- start_r + 1 }
   
@@ -130,42 +72,26 @@ print.tabular.xlsx <- function(wb, sheet, coords, tabular,
     
   }
   
-
-  
   
   # if margins, add row/and or col margin
   # -------------------------------------
   
-#   row.margin.name
-#   col.margin.name
-#   
-#   margin.table(tab)
-    
+  #   row.margin.name
+  #   col.margin.name
+  #   
+  #   margin.table(tab)
+  
+  
   # if comment, add additional row with comment
   # -------------------------------------------
   
-    
+  
   
   # return wb (save if filename?)
   # -----------------------------
   wb
   
 }
-
-d <- as.data.frame(Titanic)
-tab <- table(d$Class, d$Sex)
-str(tab)
-
-wb <- createWorkbook()
-sheet_name <- 'OR_tables'
-addWorksheet(wb = wb, sheetName = sheet_name)
-#setColWidths(wb, sheet = 1, cols=1:100, widths = "auto") # set cols to automatically resize
-setColWidths(wb, sheet = 1, cols=1:100, widths = "auto") # set cols to automatically resize
-wb <- print.tabular.xlsx(wb, sheet='OR_tables', coords=c(1,1), tabular=t.wg.centrale, add.caption=TRUE)
-wb <- print.tabular.xlsx(wb, 'OR_tables', c(1, nrow(t.wg.centrale)+4), t.hhr.centrale)
-
-wb <- print.tabular.xlsx(wb, 'OR_tables', c(1, 1), tab)
-openXL(wb)
 
 
 last_filled_row <- function(wb, sheet_number) {
@@ -185,18 +111,21 @@ last_filled_row <- function(wb, sheet_number) {
 
 print.tabulars.xlsx <- function(wb, sheet, tabulars, start_c=1) {
   # todo: specify by sheet index or name
-  
+
   for (tabular in tabulars) {
     
     # check the last 
     previous_r <- last_filled_row(wb, sheet)
     
-    if (previous_r == 0) { start_r <- 1}
-    else {start_r <- previous_r + 2}    
+    if (previous_r == 0) { 
+      start_r <- 1
+    }else {
+      start_r <- previous_r + 2
+    }    
     
     coords <- c(start_r, start_c)
-    print.tabular.xlsx(wb, sheet, coords, tabular)
-    
+    print.tabular.xlsx(wb, sheet, coords, tabular) # modify in place!
+    #openXL(wb)
   }
   
   wb
@@ -204,14 +133,8 @@ print.tabulars.xlsx <- function(wb, sheet, tabulars, start_c=1) {
 }
 
 
-d <- as.data.frame(Titanic)
-tab1 <- table(d$Class, d$Sex)
-tab2 <- table(d$Class, d$Survived)
-tab3 <- table(d$Sex, d$Survived)
+#write.xlsx(t.wg.centrale, file = "writeXLSXTable1.xlsx", asTable = TRUE) # error, geen data.frame
 
-wb <- createWorkbook()
-sheet_name <- 'OR_tables'
-addWorksheet(wb = wb, sheetName = sheet_name)
-
-wb <- print.tabulars.xlsx(wb, 1, list(tab1, tab2, tab3) )
-openXL(wb)
+# options: simple data, or automatically formatedd as a table
+# write.xlsx(tab, file = "OR1_descr_tables.xlsx", asTable = TRUE, # issue, "row.name"s als colname
+#            col.names=TRUE, row.names=TRUE) 

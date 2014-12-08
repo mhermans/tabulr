@@ -43,6 +43,7 @@ openxlsx vs XLConnect vs xlsx
 
 ## 
 
+# TODO wat is een header/footer? in Excel
  
 ## Design of tables
 

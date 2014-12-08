@@ -23,9 +23,25 @@ print.tabular.xlsx <- function(wb, sheet, coords, tabular,
   if ('matrix' %in% class(tabular) ) { tabular <- as.data.frame(tabular) }
   if ('svytable' %in% class(tabular)) { tabular <- as.data.frame.matrix(tabular) }
   
+  # dimensions
+  # ----------
+  
+  #   1 caption row       x   [spanning caption colums]
+  #   2 white row         x   1 rownames col  + 3 ncol cols + 1 row margin col
+  #   3 colnames row      x   1 whitespace    + 3 ncol rows + 1 row margin col
+  #   4 data row          x   1 rowname col   + 3 ncol rows + 1 row margin col
+  #   5 data row          x   1 rowname col   + 3 ncol rows + 1 row margin col
+  #   6 data row          x   1 rowname col   + 3 ncol rows + 1 row margin col
+  #   7 col margin row    x   1 whitespace    + 3 ncol rows + 1 row margin col
+  #   8 comment row       x   [spanning comment columns]
+  
   # consider coords (r,c)
-  start_r <- coords[1]
-  start_c <- coords[2]
+  table_start_r <- coords[1]
+  table_start_c <- coords[2]
+  
+  # data includes rownames, colnames TODO: change to make option?
+  data_start_r <- table_start_r
+  data_start_c <- table_start_c
   
   n_data_rows <- nrow(tabular)
   n_data_cols <- ncol(tabular)
@@ -33,13 +49,13 @@ print.tabular.xlsx <- function(wb, sheet, coords, tabular,
   #n_total_rows <- 
   
   # if caption, start the table one row lower
-  if (add.caption) { start_r <- start_r + 1 }
+  if (add.caption) { data_start_r <- data_start_r + 2 } # optional whiteline => 1 ipv 2?
   
   # write out data rows/cols, including row & col names
   # ---------------------------------------------------
   
   writeData(
-    wb = wb, sheet = sheet, startCol = start_c, startRow = start_r,
+    wb = wb, sheet = sheet, startCol = data_start_c, startRow = data_start_r,
     x = tabular, rowNames=TRUE, colNames=TRUE,
     borders = "surrounding")
   
@@ -53,19 +69,18 @@ print.tabular.xlsx <- function(wb, sheet, coords, tabular,
     # add row contents
     # ----------------
     
-    # row for comment is one above start_r 
-    comment_r <- start_r - 1
+    # row for comment is the most top one, i.e. table_start_r
     writeData(
-      wb = wb, sheet = sheet, startCol = start_c, startRow = comment_r,
+      wb = wb, sheet = sheet, startCol = table_start_c, startRow = table_start_r,
       x = caption_text, rowNames=FALSE, colNames=FALSE)
     
     # for caption, merge the cells to span multiple cols, either width table, or 
     # some minimum nr. of cols
     
-    comment_merge_width <- ifelse(7 - start_c >= 6, 6)
+    comment_merge_width <- ifelse(7 - table_start_c >= 6, 6)
     mergeCells(wb, sheet=sheet, 
-               cols = start_c:comment_merge_width, 
-               rows = comment_r)
+               cols = table_start_c:comment_merge_width, 
+               rows = table_start_r)
     
     # TODO: auto col width should not be affected
     # cf. https://github.com/awalker89/openxlsx/issues/43

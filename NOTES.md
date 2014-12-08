@@ -6,14 +6,7 @@ tab1 <- svytable()
 caption(tab1) <- 'Tabel caption'
 
 
-caption 		# col onder of boven toevoegen, spanning?
-row.margin 		# col rechts toevoegen
-col.margin 		# row onder toevoegen
-comment			# row onder toevoegen [italic?)
 
-write.tabular.xlsx <- function(wb, coords, tabular, caption, margins, comment) {
-
-}
 
 Two dimensional tabular datastructures:
 
@@ -36,14 +29,19 @@ Targeted output formats:
 * `openxlsx` https://github.com/awalker89/openxlsx
 * `XLConnect` https://github.com/miraisolutions/xlconnect
 
+See also:
+
+* http://cran.r-project.org/web/packages/tables/index.html
+* kable() in `knitr`
+
 openxlsx vs XLConnect vs xlsx
 	-> openxlsx heeft geen dependency op Java, meer high level, minder goed gedocumenteerd als XLConnect
 
 
-
+## 
 
  
-Design of tables
+## Design of tables
 
 * http://www.r-project.org/conferences/useR-2007/program/posters/weigand.pdf
 * Banner table: http://www.woelfelresearch.com/bannerTables.html
@@ -52,13 +50,39 @@ Design of tables
 * http://www.stata.com/stata-news/news29-1/export-tables-to-excel/
 * http://blog.stata.com/2013/09/25/export-tables-to-excel/
 * http://statmethods.wordpress.com/2014/06/19/quickly-export-multiple-r-objects-to-an-excel-workbook/
+* [Small Guide to Making Nice Tables](http://www.inf.ethz.ch/personal/markusp/teaching/guides/guide-tables.pdf) (latex-georienteerd)
+* http://truben.no/table/
+
+
+
+define TableTemplate? e.g. bannertable, crosstable, datatable
 
 tabulr | write tabular datastructures
 
 Related: xtable, pander
 
+# not possible to seperate style and content in table construction
 
+A Tabular object should contain all the structural information and values needed so that it can be passeed to different backends...
 
+convert table(), svytable(), etc. into Tabular objects
+
+as.tabular(my_svy_tab, margins="sum"|c(10), col.class, comment='test|N', caption='mycaption', ) # default cross table
+
+a some point objet should no be more modifyable, e.g. calculate custom margins, specific tests, etc.
+
+# style
+# alignment
+
+Tabular object
+	rectangular data frame
+	strings
+		en
+			caption
+			row.labels
+			col.labels
+		nl
+	
 
 	
 

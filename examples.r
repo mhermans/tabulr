@@ -75,7 +75,9 @@ tab1 <- as.data.frame(t.wg.centrale) # omzetten naar dataframe
 # Table 2: svytable()
 tab2 <- as.data.frame.matrix(t.hhr.centrale)
 
-wb <- print.tabulars.xlsx(wb, 1, list(tab1, tab2))
+tab3 <- t.invoed.tech
+
+wb <- print.tabulars.xlsx(wb, 1, list(tab1, tab2, tab3))
 openXL(wb) # toon excel bestand zonder weg te schrijven
 
 saveWorkbook(wb, "OR1_descr_tables.xlsx", overwrite = TRUE)

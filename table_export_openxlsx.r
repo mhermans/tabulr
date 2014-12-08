@@ -82,8 +82,8 @@ print.tabular.xlsx <- function(wb, sheet, coords, tabular,
   if ('svytable' %in% class(tabular)) { tabular <- as.data.frame.matrix(tabular) }
   
   # consider coords (r,c)
-  start_r <- coords[2]
-  start_c <- coords[1]
+  start_r <- coords[1]
+  start_c <- coords[2]
   
   n_data_rows <- nrow(tabular)
   n_data_cols <- ncol(tabular)
@@ -136,10 +136,10 @@ print.tabular.xlsx <- function(wb, sheet, coords, tabular,
   # if margins, add row/and or col margin
   # -------------------------------------
   
-  row.margin.name
-  col.margin.name
-  
-  margin.table(tab)
+#   row.margin.name
+#   col.margin.name
+#   
+#   margin.table(tab)
     
   # if comment, add additional row with comment
   # -------------------------------------------
@@ -152,8 +152,9 @@ print.tabular.xlsx <- function(wb, sheet, coords, tabular,
   
 }
 
-
-
+d <- as.data.frame(Titanic)
+tab <- table(d$Class, d$Sex)
+str(tab)
 
 wb <- createWorkbook()
 sheet_name <- 'OR_tables'
@@ -162,6 +163,8 @@ addWorksheet(wb = wb, sheetName = sheet_name)
 setColWidths(wb, sheet = 1, cols=1:100, widths = "auto") # set cols to automatically resize
 wb <- print.tabular.xlsx(wb, sheet='OR_tables', coords=c(1,1), tabular=t.wg.centrale, add.caption=TRUE)
 wb <- print.tabular.xlsx(wb, 'OR_tables', c(1, nrow(t.wg.centrale)+4), t.hhr.centrale)
+
+wb <- print.tabular.xlsx(wb, 'OR_tables', c(1, 1), tab)
 openXL(wb)
 
 
@@ -178,3 +181,37 @@ last_filled_row <- function(wb, sheet_number) {
   
   max_row
 }
+
+
+print.tabulars.xlsx <- function(wb, sheet, tabulars, start_c=1) {
+  # todo: specify by sheet index or name
+  
+  for (tabular in tabulars) {
+    
+    # check the last 
+    previous_r <- last_filled_row(wb, sheet)
+    
+    if (previous_r == 0) { start_r <- 1}
+    else {start_r <- previous_r + 2}    
+    
+    coords <- c(start_r, start_c)
+    print.tabular.xlsx(wb, sheet, coords, tabular)
+    
+  }
+  
+  wb
+  
+}
+
+
+d <- as.data.frame(Titanic)
+tab1 <- table(d$Class, d$Sex)
+tab2 <- table(d$Class, d$Survived)
+tab3 <- table(d$Sex, d$Survived)
+
+wb <- createWorkbook()
+sheet_name <- 'OR_tables'
+addWorksheet(wb = wb, sheetName = sheet_name)
+
+wb <- print.tabulars.xlsx(wb, 1, list(tab1, tab2, tab3) )
+openXL(wb)

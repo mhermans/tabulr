@@ -91,6 +91,19 @@ print.tabular.xlsx <- function(wb, sheet, coords, tabular,
     
   }
   
+  if (add.col.margin) {
+    col.margin.contents <- t(rep(100, ncol(tabular))) # TODO, parametriseer
+    
+    # TODO: ook mogelijk maken dat er geen colnames zijn?
+    col_margin_c <- start_c + 1
+    col_margin_r <- 1 + nrow(tabular) + 1
+    
+    writeData(
+      wb = wb, sheet = sheet, startCol = col_margin_c, startRow = col_margin_r,
+      x = col.margin.contents, rowNames=FALSE, colNames=FALSE)  
+     
+  } 
+  
   #   row.margin.name
   #   col.margin.name
   #   

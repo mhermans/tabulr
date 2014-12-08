@@ -60,22 +60,35 @@ options("openxlsx.borderStyle" = "thin")
 # Setup workbook, sheet
 # ---------------------
 
-wb <- createWorkbook()
-addWorksheet(wb = wb, sheetName = 'OR_tables')
-setColWidths(wb, sheet = 1, cols=1:30, widths = "auto") # set cols to automatically resize
-
-# write multiple tables in single sheet
-# -------------------------------------
-
 # Table 1: cbind()'ed table
-
 tab1 <- as.data.frame(t.wg.centrale) # omzetten naar dataframe
 #class(tab1[,3] ) <- "percentage"
 
 # Table 2: svytable()
 tab2 <- as.data.frame.matrix(t.hhr.centrale)
 
+# Table 3: result svy.datatable()
 tab3 <- t.invoed.tech
+
+
+# write single table in single sheet
+# ----------------------------------
+
+wb <- createWorkbook()
+addWorksheet(wb = wb, sheetName = 'OR_tables')
+setColWidths(wb, sheet = 1, cols=1:30, widths = "auto") # set cols to automatically resize
+
+wb <- print.tabular.xlsx(wb, sheet=1, coords=c(1,1), tabular=tab1, 
+                         add.caption=FALSE,
+                         add.row.margin=TRUE)
+openXL(wb)
+
+# write multiple tables in single sheet
+# -------------------------------------
+
+wb <- createWorkbook()
+addWorksheet(wb = wb, sheetName = 'OR_tables')
+setColWidths(wb, sheet = 1, cols=1:30, widths = "auto") # set cols to automatically resize
 
 wb <- print.tabulars.xlsx(wb, 1, list(tab1, tab2, tab3))
 openXL(wb) # toon excel bestand zonder weg te schrijven

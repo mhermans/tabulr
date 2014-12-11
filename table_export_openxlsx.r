@@ -49,7 +49,7 @@ print.tabular.xlsx <- function(wb, sheet, coords, tabular,
   #n_total_rows <- 
   
   # if caption, start the table one row lower
-  if (add.caption) { data_start_r <- data_start_r + 2 } # optional whiteline => 1 ipv 2?
+  if (add.caption) { data_start_r <- data_start_r + 1 } # optional whiteline => 1 ipv 2?
   
   # write out data rows/cols, including row & col names
   # ---------------------------------------------------
@@ -57,7 +57,7 @@ print.tabular.xlsx <- function(wb, sheet, coords, tabular,
   writeData(
     wb = wb, sheet = sheet, startCol = data_start_c, startRow = data_start_r,
     x = tabular, rowNames=TRUE, colNames=TRUE,
-    borders = "surrounding")
+    borders = "none")
   
   
   # add caption-row and caption (on top by default)
@@ -99,7 +99,7 @@ print.tabular.xlsx <- function(wb, sheet, coords, tabular,
     
     for (i in 1:length(row.margin.contents)) {
       writeData(
-        wb = wb, sheet = sheet, startCol = row_margin_c, startRow = start_r+i,
+        wb = wb, sheet = sheet, startCol = row_margin_c, startRow = data_start_r+i,
         x = row.margin.contents[i], rowNames=FALSE, colNames=FALSE)  
     }
     
@@ -110,8 +110,8 @@ print.tabular.xlsx <- function(wb, sheet, coords, tabular,
     col.margin.contents <- t(rep(100, ncol(tabular))) # TODO, parametriseer
     
     # TODO: ook mogelijk maken dat er geen colnames zijn?
-    col_margin_c <- start_c + 1
-    col_margin_r <- 1 + nrow(tabular) + 1
+    col_margin_c <- data_start_c + 1
+    col_margin_r <- data_start_r + nrow(tabular) + 1
     
     writeData(
       wb = wb, sheet = sheet, startCol = col_margin_c, startRow = col_margin_r,

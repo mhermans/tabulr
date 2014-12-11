@@ -79,8 +79,13 @@ addWorksheet(wb = wb, sheetName = 'OR_tables')
 setColWidths(wb, sheet = 1, cols=1:30, widths = "auto") # set cols to automatically resize
 
 wb <- print.tabular.xlsx(wb, sheet=1, coords=c(1,1), tabular=tab1, 
-                         add.caption=FALSE,
-                         add.row.margin=TRUE)
+                         add.caption=TRUE,
+                         add.row.margin=TRUE,
+                         add.col.margin=TRUE)
+
+wb <- print.tabular.xlsx(wb, sheet=1, coords=c(1,1), tabular=tab1, 
+                         add.caption=TRUE,
+                         add.row.margin=FALSE)
 openXL(wb)
 
 # write multiple tables in single sheet
@@ -104,3 +109,66 @@ saveWorkbook(wb, "OR1_descr_tables.xlsx", overwrite = TRUE)
 #           xy=coords,
 #           borders = "surrounding", rowNames=TRUE, headerStyle = hs1, borderStyle = "dashed")
 
+
+
+# VOORBEELDTABELLEN
+# =================
+
+wb <- createWorkbook()
+
+
+# Tabel met enkel data en row/colnames
+addWorksheet(wb = wb, sheetName = 'basic')
+setColWidths(wb, sheet = 1, cols=1:30, widths = "auto")
+wb <- print.tabular.xlsx(wb, sheet=1, coords=c(1,1), tabular=t.invoed.tech, 
+                         add.caption=FALSE,
+                         add.row.margin=FALSE,
+                         add.col.margin=FALSE)
+
+# Tabel met data, R/C names en caption
+addWorksheet(wb = wb, sheetName = 'caption')
+setColWidths(wb, sheet = 2, cols=1:30, widths = "auto")
+wb <- print.tabular.xlsx(wb, sheet=2, coords=c(1,1), tabular=t.invoed.tech, 
+                         add.caption=TRUE,
+                         add.row.margin=FALSE,
+                         add.col.margin=FALSE)
+
+# Tabel met data, R/C names en caption en comment
+# addWorksheet(wb = wb, sheetName = 'comment')
+# setColWidths(wb, sheet = 3, cols=1:30, widths = "auto")
+# wb <- print.tabular.xlsx(wb, sheet=3, coords=c(1,1), tabular=t.invoed.tech, 
+#                          add.caption=TRUE,
+#                          add.comment=TRUE,
+#                          add.row.margin=FALSE,
+#                          add.col.margin=FALSE)
+
+
+# Tabel met data, R/C names, caption en R margins
+addWorksheet(wb = wb, sheetName = 'row_margin')
+setColWidths(wb, sheet = 3, cols=1:30, widths = "auto")
+wb <- print.tabular.xlsx(wb, sheet=3, coords=c(1,1), tabular=t.invoed.tech, 
+                         add.caption=TRUE,
+                         add.row.margin=TRUE,
+                         add.col.margin=FALSE)
+
+# Tabel met data, R/C names, caption en col margins
+addWorksheet(wb = wb, sheetName = 'c_margins')
+setColWidths(wb, sheet = 4, cols=1:30, widths = "auto")
+wb <- print.tabular.xlsx(wb, sheet=4, coords=c(1,1), tabular=t.invoed.tech, 
+                         add.caption=TRUE,
+                         add.row.margin=FALSE,
+                         add.col.margin=TRUE)
+
+# Tabel met data, R/C names, caption en R/C margins
+addWorksheet(wb = wb, sheetName = 'rc_margins')
+setColWidths(wb, sheet = 5, cols=1:30, widths = "auto")
+wb <- print.tabular.xlsx(wb, sheet=5, coords=c(1,1), tabular=t.invoed.tech, 
+                         add.caption=TRUE,
+                         add.row.margin=TRUE,
+                         add.col.margin=TRUE)
+
+# Tabel met data, R/C names, caption en R/C margins en comment
+addWorksheet(wb = wb, sheetName = 'OR_tables')
+setColWidths(wb, sheet = 1, cols=1:30, widths = "auto")
+
+openXL(wb)

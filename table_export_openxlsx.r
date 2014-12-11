@@ -49,7 +49,7 @@ print.tabular.xlsx <- function(wb, sheet, coords, tabular,
   #n_total_rows <- 
   
   # if caption, start the table one row lower
-  if (add.caption) { data_start_r <- data_start_r + 1 } # optional whiteline => 1 ipv 2?
+  if (add.caption) { data_start_r <- data_start_r + 2 } # optional whiteline => 1 ipv 2?
   
   # write out data rows/cols, including row & col names
   # ---------------------------------------------------

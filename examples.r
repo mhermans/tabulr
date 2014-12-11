@@ -118,7 +118,7 @@ wb <- createWorkbook()
 
 
 # Tabel met enkel data en row/colnames
-addWorksheet(wb = wb, sheetName = 'basic')
+addWorksheet(wb = wb, sheetName = 'basic', gridLines = TRUE)
 setColWidths(wb, sheet = 1, cols=1:30, widths = "auto")
 wb <- print.tabular.xlsx(wb, sheet=1, coords=c(1,1), tabular=t.invoed.tech, 
                          add.caption=FALSE,
@@ -167,7 +167,36 @@ wb <- print.tabular.xlsx(wb, sheet=6, coords=c(1,1), tabular=t.invoed.tech,
                          add.col.margin=FALSE)
 
 # Tabel met data, R/C names, caption en R/C margins en comment
-addWorksheet(wb = wb, sheetName = 'OR_tables')
+addWorksheet(wb = wb, sheetName = 'margin_comment')
+setColWidths(wb, sheet = 7, cols=1:30, widths = "auto")
+wb <- print.tabular.xlsx(wb, sheet=7, coords=c(1,1), tabular=t.invoed.tech, 
+                         add.caption=TRUE,
+                         add.comment=TRUE,
+                         add.row.margin=TRUE,
+                         add.col.margin=TRUE)
+openXL(wb)
+
+
+
+## Style horizontal line stylings
+wb <- createWorkbook("My name here")
+# Tabel met data, R/C names en caption
+addWorksheet(wb = wb, sheetName = 'caption', gridLines = FALSE)
 setColWidths(wb, sheet = 1, cols=1:30, widths = "auto")
+wb <- print.tabular.xlsx(wb, sheet=1, coords=c(1,1), tabular=t.invoed.tech, 
+                         add.caption=TRUE,
+                         add.comment=TRUE,
+                         add.row.margin=TRUE,
+                         add.col.margin=TRUE)
+
+table_top_row_style <- createStyle(border="Top", borderStyle = "medium", borderColour="#000000")
+table_bottom_row_style <- createStyle(border="Top", borderStyle = "medium", borderColour="#000000")
+table_mid_row_style <- createStyle(border="Top", borderStyle = "thin", borderColour="#000000")
+rc_names_style <- createStyle(textDecoration="bold")
+
+addStyle(wb, sheet = 1, table_top_row_style, rows = 3, cols = 1:6, gridExpand = TRUE)
+addStyle(wb, sheet = 1, table_mid_row_style, rows = 4, cols = 1:6, gridExpand = TRUE)
+addStyle(wb, sheet = 1, table_mid_row_style, rows = 12, cols = 1:6, gridExpand = TRUE)
+addStyle(wb, sheet = 1, table_bottom_row_style, rows = 13, cols = 1:6, gridExpand = TRUE)
 
 openXL(wb)

@@ -54,6 +54,11 @@ print.tabular.xlsx <- function(wb, sheet, coords, tabular,
   if ( add.comment == TRUE ) { comment_r <- data_end_r + 1 }
   if ( add.col.margin == TRUE ) { comment_r <- col_margin_r + 1 }
   
+#   n_total_rows <- n_data_rows
+#   if (add.caption = TRUE) { n_total_rows + 1 }
+#   if (add.col.margin = TRUE) { n_total_rows + 1 }
+#   if (add.comment = TRUE) { n_total_rows + 1 }
+  
   # determine position index of cols
   
   n_data_cols <- ncol(tabular)
@@ -63,15 +68,12 @@ print.tabular.xlsx <- function(wb, sheet, coords, tabular,
   # TODO: ook mogelijk maken dat er geen rownames zijn?
   row_margin_c <- 1 + ncol(tabular) + 1
   
-  
   # TODO: ook mogelijk maken dat er geen colnames zijn?
   col_margin_c <- data_start_c + 1
 
-  #n_total_cols <- 
-  #n_total_rows <- 
+  table_end_r <- 1 + n_data_cols
+  if (add.row.margin == TRUE) { table_end_r + 1 } 
 
-  
-  
   
   # write out data rows/cols, including row & col names
   # ---------------------------------------------------
@@ -156,6 +158,22 @@ print.tabular.xlsx <- function(wb, sheet, coords, tabular,
                rows = comment_r)
     
   } 
+  
+  
+  # add horizontal line styling
+  # ---------------------------
+  
+  table_top_row_style <- createStyle(border="Top", borderStyle = "medium", borderColour="#000000")
+  table_bottom_row_style <- createStyle(border="Top", borderStyle = "medium", borderColour="#000000")
+  table_mid_row_style <- createStyle(border="Top", borderStyle = "thin", borderColour="#000000")
+  #rc_names_style <- createStyle(textDecoration="bold")
+  
+  # table top rule -> add to start_table_row
+  addStyle(wb, sheet = 1, table_top_row_style, rows = table_start_r, cols = table_start_r:table_end_r, gridExpand = TRUE)
+  addStyle(wb, sheet = 1, table_mid_row_style, rows = table_start_r+1, cols = table_start_r:table_end_r, gridExpand = TRUE)
+#   addStyle(wb, sheet = 1, table_mid_row_style, rows = 12, cols = 1:6, gridExpand = TRUE)
+#   addStyle(wb, sheet = 1, table_bottom_row_style, rows = 13, cols = 1:6, gridExpand = TRUE)
+  
   
   
   # return wb (save if filename?)

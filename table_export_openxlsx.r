@@ -77,9 +77,9 @@ print.tabular.xlsx <- function(wb, sheet, coords, tabular,
     # for caption, merge the cells to span multiple cols, either width table, or 
     # some minimum nr. of cols
     
-    comment_merge_width <- ifelse(7 - table_start_c >= 6, 6)
+    caption_merge_width <- ifelse(7 - table_start_c >= 6, 6)
     mergeCells(wb, sheet=sheet, 
-               cols = table_start_c:comment_merge_width, 
+               cols = table_start_c:caption_merge_width, 
                rows = table_start_r)
     
     # TODO: auto col width should not be affected
@@ -128,6 +128,23 @@ print.tabular.xlsx <- function(wb, sheet, coords, tabular,
   # if comment, add additional row with comment
   # -------------------------------------------
   
+  if (add.comment) {
+    comment.contents <- 'N = 1200 (NA = 100), chi^2 = 3, p 0.000. Gewogen steekproef ' # TODO, parametriseer
+    
+    # TODO: ook mogelijk maken dat er geen colnames zijn?
+    comment_r <- data_start_r + n_data_rows + 1
+    if (add.col.margin) { comment_r <- comment_r + 1 }
+    
+    writeData(
+      wb = wb, sheet = sheet, startCol = table_start_c, startRow = comment_r,
+      x = comment.contents, rowNames=FALSE, colNames=FALSE)  
+    
+    comment_merge_width <- ifelse(7 - table_start_c >= 6, 6)
+    mergeCells(wb, sheet=sheet, 
+               cols = table_start_c:comment_merge_width, 
+               rows = comment_r)
+    
+  } 
   
   
   # return wb (save if filename?)

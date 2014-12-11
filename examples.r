@@ -133,16 +133,6 @@ wb <- print.tabular.xlsx(wb, sheet=2, coords=c(1,1), tabular=t.invoed.tech,
                          add.row.margin=FALSE,
                          add.col.margin=FALSE)
 
-# Tabel met data, R/C names en caption en comment
-# addWorksheet(wb = wb, sheetName = 'comment')
-# setColWidths(wb, sheet = 3, cols=1:30, widths = "auto")
-# wb <- print.tabular.xlsx(wb, sheet=3, coords=c(1,1), tabular=t.invoed.tech, 
-#                          add.caption=TRUE,
-#                          add.comment=TRUE,
-#                          add.row.margin=FALSE,
-#                          add.col.margin=FALSE)
-
-
 # Tabel met data, R/C names, caption en R margins
 addWorksheet(wb = wb, sheetName = 'row_margin')
 setColWidths(wb, sheet = 3, cols=1:30, widths = "auto")
@@ -166,6 +156,15 @@ wb <- print.tabular.xlsx(wb, sheet=5, coords=c(1,1), tabular=t.invoed.tech,
                          add.caption=TRUE,
                          add.row.margin=TRUE,
                          add.col.margin=TRUE)
+
+# Tabel met data, R/C names en caption en comment
+addWorksheet(wb = wb, sheetName = 'comment')
+setColWidths(wb, sheet = 6, cols=1:30, widths = "auto")
+wb <- print.tabular.xlsx(wb, sheet=6, coords=c(1,1), tabular=t.invoed.tech, 
+                         add.caption=TRUE,
+                         add.comment=TRUE,
+                         add.row.margin=FALSE,
+                         add.col.margin=FALSE)
 
 # Tabel met data, R/C names, caption en R/C margins en comment
 addWorksheet(wb = wb, sheetName = 'OR_tables')

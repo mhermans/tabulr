@@ -35,21 +35,43 @@ print.tabular.xlsx <- function(wb, sheet, coords, tabular,
   #   7 col margin row    x   1 whitespace    + 3 ncol rows + 1 row margin col
   #   8 comment row       x   [spanning comment columns]
   
-  # consider coords (r,c)
-  table_start_r <- coords[1]
-  table_start_c <- coords[2]
+  # determine position index of rows
+  
+  n_data_rows <- nrow(tabular)
+  
+  table_start_r <- coords[1] # consider coords (r,c)
+  caption_r <- table_start_r
   
   # data includes rownames, colnames TODO: change to make option?
   data_start_r <- table_start_r
-  data_start_c <- table_start_c
   
-  n_data_rows <- nrow(tabular)
+  # if caption, start the table two rows lower
+  if (add.caption) { data_start_r <- data_start_r + 2 } # optional whiteline => 1 ipv 2?
+  
+  data_end_r <- data_start_r + n_data_rows
+  col_margin_r <- data_end_r + 1  
+
+  if ( add.comment == TRUE ) { comment_r <- data_end_r + 1 }
+  if ( add.col.margin == TRUE ) { comment_r <- col_margin_r + 1 }
+  
+  # determine position index of cols
+  
   n_data_cols <- ncol(tabular)
+  table_start_c <- coords[2]
+  data_start_c <- table_start_c
+
+  # TODO: ook mogelijk maken dat er geen rownames zijn?
+  row_margin_c <- 1 + ncol(tabular) + 1
+  
+  
+  # TODO: ook mogelijk maken dat er geen colnames zijn?
+  col_margin_c <- data_start_c + 1
+
   #n_total_cols <- 
   #n_total_rows <- 
+
   
-  # if caption, start the table one row lower
-  if (add.caption) { data_start_r <- data_start_r + 2 } # optional whiteline => 1 ipv 2?
+  
   
   # write out data rows/cols, including row & col names
   # ---------------------------------------------------
@@ -71,7 +93,7 @@ print.tabular.xlsx <- function(wb, sheet, coords, tabular,
     
     # row for comment is the most top one, i.e. table_start_r
     writeData(
-      wb = wb, sheet = sheet, startCol = table_start_c, startRow = table_start_r,
+      wb = wb, sheet = sheet, startCol = table_start_c, startRow = caption_r,
       x = caption_text, rowNames=FALSE, colNames=FALSE)
     
     # for caption, merge the cells to span multiple cols, either width table, or 
@@ -94,9 +116,6 @@ print.tabular.xlsx <- function(wb, sheet, coords, tabular,
   if (add.row.margin) {
     row.margin.contents <- t(rep(100, nrow(tabular))) # TODO, parametriseer
     
-    # TODO: ook mogelijk maken dat er geen rownames zijn?
-    row_margin_c <- 1 + ncol(tabular) + 1
-    
     for (i in 1:length(row.margin.contents)) {
       writeData(
         wb = wb, sheet = sheet, startCol = row_margin_c, startRow = data_start_r+i,
@@ -108,10 +127,6 @@ print.tabular.xlsx <- function(wb, sheet, coords, tabular,
   
   if (add.col.margin) {
     col.margin.contents <- t(rep(100, ncol(tabular))) # TODO, parametriseer
-    
-    # TODO: ook mogelijk maken dat er geen colnames zijn?
-    col_margin_c <- data_start_c + 1
-    col_margin_r <- data_start_r + nrow(tabular) + 1
     
     writeData(
       wb = wb, sheet = sheet, startCol = col_margin_c, startRow = col_margin_r,
@@ -130,10 +145,6 @@ print.tabular.xlsx <- function(wb, sheet, coords, tabular,
   
   if (add.comment) {
     comment.contents <- 'N = 1200 (NA = 100), chi^2 = 3, p 0.000. Gewogen steekproef ' # TODO, parametriseer
-    
-    # TODO: ook mogelijk maken dat er geen colnames zijn?
-    comment_r <- data_start_r + n_data_rows + 1
-    if (add.col.margin) { comment_r <- comment_r + 1 }
     
     writeData(
       wb = wb, sheet = sheet, startCol = table_start_c, startRow = comment_r,

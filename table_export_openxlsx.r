@@ -37,6 +37,8 @@ print.tabular.xlsx <- function(wb, sheet, coords, tabular,
   
   # determine position index of rows
   
+  caption_table_space <- 1 # optional whiteline => 1 ipv 2?
+  
   n_data_rows <- nrow(tabular)
   
   table_start_r <- coords[1] # consider coords (r,c)
@@ -46,13 +48,26 @@ print.tabular.xlsx <- function(wb, sheet, coords, tabular,
   data_start_r <- table_start_r
   
   # if caption, start the table two rows lower
-  if (add.caption) { data_start_r <- data_start_r + 2 } # optional whiteline => 1 ipv 2?
+  if (add.caption) { data_start_r <- data_start_r + caption_table_space + 1 } # 
+  
+  #col_names_r <- data_start_r - 1 # colnames one above data # <-> currently included in data
+  col_names_r <- data_start_r 
   
   data_end_r <- data_start_r + n_data_rows
+  
+  table_end_r <- data_end_r
+  
   col_margin_r <- data_end_r + 1  
 
-  if ( add.comment == TRUE ) { comment_r <- data_end_r + 1 }
+  if (add.col.margin == TRUE) { table_end_r + 1 } 
+  
+  # caption and comment are outside of table start-end dimensions?
+  
+  if ( add.comment == TRUE ) { 
+    comment_r <- data_end_r + 1 }
   if ( add.col.margin == TRUE ) { comment_r <- col_margin_r + 1 }
+
+  
   
 #   n_total_rows <- n_data_rows
 #   if (add.caption = TRUE) { n_total_rows + 1 }
@@ -71,8 +86,8 @@ print.tabular.xlsx <- function(wb, sheet, coords, tabular,
   # TODO: ook mogelijk maken dat er geen colnames zijn?
   col_margin_c <- data_start_c + 1
 
-  table_end_r <- 1 + n_data_cols
-  if (add.row.margin == TRUE) { table_end_r + 1 } 
+  table_end_c <- 1 + ncol(tabular)
+  if (add.row.margin == TRUE) { table_end_c + 1 } 
 
   
   # write out data rows/cols, including row & col names
@@ -169,8 +184,18 @@ print.tabular.xlsx <- function(wb, sheet, coords, tabular,
   #rc_names_style <- createStyle(textDecoration="bold")
   
   # table top rule -> add to start_table_row
-  addStyle(wb, sheet = 1, table_top_row_style, rows = table_start_r, cols = table_start_r:table_end_r, gridExpand = TRUE)
-  addStyle(wb, sheet = 1, table_mid_row_style, rows = table_start_r+1, cols = table_start_r:table_end_r, gridExpand = TRUE)
+  addStyle(wb, sheet = 1, table_top_row_style, rows = col_names_r, cols = table_start_c:table_end_c, gridExpand = TRUE)
+  addStyle(wb, sheet = 1, table_mid_row_style, rows = col_names_r+1, cols = table_start_c:table_end_c, gridExpand = TRUE)
+
+  # no col margin -> only bottom line
+  if (add.col.margin == FALSE) {
+    addStyle(wb, sheet = 1, table_bottom_row_style, rows = table_end_r+1, cols = table_start_c:table_end_c, gridExpand = TRUE)
+  }else{
+  # col margin -> mid lid en bottom line
+    addStyle(wb, sheet = 1, table_mid_row_style, rows = table_end_r, cols = table_start_c:table_end_c, gridExpand = TRUE)
+    addStyle(wb, sheet = 1, table_bottom_row_style, rows = table_end_r+1, cols = table_start_c:table_end_c, gridExpand = TRUE)
+  }
+
 #   addStyle(wb, sheet = 1, table_mid_row_style, rows = 12, cols = 1:6, gridExpand = TRUE)
 #   addStyle(wb, sheet = 1, table_bottom_row_style, rows = 13, cols = 1:6, gridExpand = TRUE)
   

@@ -75,7 +75,7 @@ tab3 <- t.invoed.tech
 # ----------------------------------
 
 wb <- createWorkbook()
-addWorksheet(wb = wb, sheetName = 'OR_tables')
+addWorksheet(wb = wb, sheetName = 'OR_tables', gridLines = FALSE)
 setColWidths(wb, sheet = 1, cols=1:30, widths = "auto") # set cols to automatically resize
 
 wb <- print.tabular.xlsx(wb, sheet=1, coords=c(1,1), tabular=tab1, 
@@ -92,7 +92,7 @@ openXL(wb)
 # -------------------------------------
 
 wb <- createWorkbook()
-addWorksheet(wb = wb, sheetName = 'OR_tables')
+addWorksheet(wb = wb, sheetName = 'OR_tables', gridLines = FALSE)
 setColWidths(wb, sheet = 1, cols=1:30, widths = "auto") # set cols to automatically resize
 
 wb <- print.tabulars.xlsx(wb, 1, list(tab1, tab2, tab3))
@@ -200,3 +200,6 @@ addStyle(wb, sheet = 1, table_mid_row_style, rows = 12, cols = 1:6, gridExpand =
 addStyle(wb, sheet = 1, table_bottom_row_style, rows = 13, cols = 1:6, gridExpand = TRUE)
 
 openXL(wb)
+
+
+

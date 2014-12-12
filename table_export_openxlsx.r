@@ -13,8 +13,8 @@ library(openxlsx)
 # * comment			  # row onder toevoegen [italic?)
 
 print.tabular.xlsx <- function(wb, sheet, coords, tabular, 
-                               add.caption=FALSE, add.comment=FALSE, 
-                               add.row.margin=FALSE, add.col.margin=FALSE,
+                               add.caption=TRUE, add.comment=TRUE, 
+                               add.row.margin=TRUE, add.col.margin=TRUE,
                                style=None) {
   
   # make sure the object is a data.frame, convert if needed
@@ -228,7 +228,7 @@ last_filled_row <- function(wb, sheet_number) {
 }
 
 
-print.tabulars.xlsx <- function(wb, sheet, tabulars, start_c=1) {
+print.tabulars.xlsx <- function(wb, sheet, tabulars, start_c=1, spacer_rows=2) {
   # todo: specify by sheet index or name
 
   for (tabular in tabulars) {
@@ -239,7 +239,7 @@ print.tabulars.xlsx <- function(wb, sheet, tabulars, start_c=1) {
     if (previous_r == 0) { 
       start_r <- 1
     }else {
-      start_r <- previous_r + 2
+      start_r <- previous_r + 1 + spacer_rows
     }    
     
     coords <- c(start_r, start_c)

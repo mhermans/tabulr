@@ -35,7 +35,9 @@ print.tabular.xlsx <- function(wb, sheet, coords, tabular,
   #   7 col margin row    x   1 whitespace    + 3 ncol rows + 1 row margin col
   #   8 comment row       x   [spanning comment columns]
   
+  
   # determine position index of rows
+  # --------------------------------
   
   caption_table_space <- 1 # optional whiteline => 1 ipv 2?
   
@@ -59,7 +61,7 @@ print.tabular.xlsx <- function(wb, sheet, coords, tabular,
   
   col_margin_r <- data_end_r + 1  
 
-  if (add.col.margin == TRUE) { table_end_r + 1 } 
+  if (add.col.margin == TRUE) { table_end_r <- table_end_r + 1 } 
   
   # caption and comment are outside of table start-end dimensions?
   
@@ -75,7 +77,8 @@ print.tabular.xlsx <- function(wb, sheet, coords, tabular,
 #   if (add.comment = TRUE) { n_total_rows + 1 }
   
   # determine position index of cols
-  
+  # --------------------------------
+
   n_data_cols <- ncol(tabular)
   table_start_c <- coords[2]
   data_start_c <- table_start_c
@@ -87,9 +90,11 @@ print.tabular.xlsx <- function(wb, sheet, coords, tabular,
   col_margin_c <- data_start_c + 1
 
   table_end_c <- 1 + ncol(tabular)
-  if (add.row.margin == TRUE) { table_end_c + 1 } 
+  if (add.row.margin == TRUE) { table_end_c <- table_end_c + 1 } 
 
   
+
+
   # write out data rows/cols, including row & col names
   # ---------------------------------------------------
   

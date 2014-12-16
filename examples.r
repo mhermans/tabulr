@@ -93,7 +93,8 @@ openXL(wb)
 
 wb <- createWorkbook()
 addWorksheet(wb = wb, sheetName = 'OR_tables', gridLines = FALSE)
-setColWidths(wb, sheet = 1, cols=1:30, widths = "auto") # set cols to automatically resize
+#setColWidths(wb, sheet = 1, cols=1:30, widths = "auto") # set cols to automatically resize
+setColWidths(wb, sheet=1, cols=1:10, widths=c(50,rep(15,9)))
 
 wb <- print.tabulars.xlsx(wb, 1, list(tab1, tab2, tab3))
 openXL(wb) # toon excel bestand zonder weg te schrijven

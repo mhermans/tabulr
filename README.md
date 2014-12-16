@@ -5,7 +5,7 @@ tabulr
 
 Goal is are a set of robust functions that can take a list of R-objects containing a tabular structure, and write it to Excel using sensible layout and styling defaults. 
 
-Such abular structure are for instance crosstables, output from `syvtable()` and `table()`, a table of descriptives or [model parameters](https://github.com/dgrtwo/broom), a dataframe, etc.
+Such tabular structure are for instance crosstables, output from `syvtable()` and `table()`, a table of descriptives or [model parameters](https://github.com/dgrtwo/broom), a dataframe, etc.
 
 # Example
 
@@ -17,6 +17,8 @@ addWorksheet(wb = wb, sheetName = 'OR_tables', gridLines = FALSE)
 wb <- print.tabulars.xlsx(wb, 1, list(tab1, tab2, tab3))
 saveWorkbook(wb, "OR1_descr_tables.xlsx",
 ```
+
+Resulting Excel-file: [OR1_descr_tables.xlsx](https://github.com/mhermans/tabulr/raw/master/examples/OR1_descr_tables.xlsx)
 
 # TODO
 

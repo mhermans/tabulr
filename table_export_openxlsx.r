@@ -183,7 +183,7 @@ print.tabular.xlsx <- function(wb, sheet, coords, tabular,
   # add horizontal line styling
   # ---------------------------
   
-  table_top_row_style <- createStyle(border="Top", borderStyle = "medium", borderColour="#000000")
+  table_top_row_style <- createStyle(border="Top", borderStyle = "medium", borderColour="#000000", halign='right')
   table_bottom_row_style <- createStyle(border="Top", borderStyle = "medium", borderColour="#000000")
   table_mid_row_style <- createStyle(border="Top", borderStyle = "thin", borderColour="#000000")
   #rc_names_style <- createStyle(textDecoration="bold")

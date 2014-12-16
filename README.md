@@ -20,10 +20,10 @@ saveWorkbook(wb, "OR1_descr_tables.xlsx",
 
 # TODO
 
-[X] rewrite functions using [openxlsx](https://github.com/awalker89/openxlsx).
-[X] basic layout routine for row & col names, row and col margins, captions and comments.
-[X] minimal styling based on LaTex tables
-[ ] auto column resizing (in progress, cf. [issue #43](https://github.com/awalker89/openxlsx/issues/43))
-[ ] easy setters and getters for tabular properties (e.g. `caption()`, `comment()`)
-[ ] optional: cell highlighting for significance-tests?
-[ ] optional: multilingual strings support?
+- [X] rewrite functions using [openxlsx](https://github.com/awalker89/openxlsx).
+- [X] basic layout routine for row & col names, row and col margins, captions and comments.
+- [X] minimal styling based on LaTex tables
+- [ ] auto column resizing (in progress, cf. [issue #43](https://github.com/awalker89/openxlsx/issues/43))
+- [ ] easy setters and getters for tabular properties (e.g. `caption()`, `comment()`)
+- [ ] optional: cell highlighting for significance-tests?
+- [ ] optional: multilingual strings support?

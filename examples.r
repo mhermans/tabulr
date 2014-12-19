@@ -91,6 +91,8 @@ openXL(wb)
 # write multiple tables in single sheet
 # -------------------------------------
 
+# test
+
 wb <- createWorkbook()
 addWorksheet(wb = wb, sheetName = 'OR_tables', gridLines = FALSE)
 #setColWidths(wb, sheet = 1, cols=1:30, widths = "auto") # set cols to automatically resize

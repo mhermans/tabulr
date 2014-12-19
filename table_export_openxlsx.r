@@ -189,16 +189,16 @@ print.tabular.xlsx <- function(wb, sheet, coords, tabular,
   #rc_names_style <- createStyle(textDecoration="bold")
   
   # table top rule -> add to start_table_row
-  addStyle(wb, sheet = 1, table_top_row_style, rows = col_names_r, cols = table_start_c:table_end_c, gridExpand = TRUE)
-  addStyle(wb, sheet = 1, table_mid_row_style, rows = col_names_r+1, cols = table_start_c:table_end_c, gridExpand = TRUE)
+  addStyle(wb, sheet = sheet, table_top_row_style, rows = col_names_r, cols = table_start_c:table_end_c, gridExpand = TRUE)
+  addStyle(wb, sheet = sheet, table_mid_row_style, rows = col_names_r+1, cols = table_start_c:table_end_c, gridExpand = TRUE)
 
   # no col margin -> only bottom line
   if (add.col.margin == FALSE) {
-    addStyle(wb, sheet = 1, table_bottom_row_style, rows = table_end_r+1, cols = table_start_c:table_end_c, gridExpand = TRUE)
+    addStyle(wb, sheet = sheet, table_bottom_row_style, rows = table_end_r+1, cols = table_start_c:table_end_c, gridExpand = TRUE)
   }else{
   # col margin -> mid lid en bottom line
-    addStyle(wb, sheet = 1, table_mid_row_style, rows = table_end_r, cols = table_start_c:table_end_c, gridExpand = TRUE)
-    addStyle(wb, sheet = 1, table_bottom_row_style, rows = table_end_r+1, cols = table_start_c:table_end_c, gridExpand = TRUE)
+    addStyle(wb, sheet = sheet, table_mid_row_style, rows = table_end_r, cols = table_start_c:table_end_c, gridExpand = TRUE)
+    addStyle(wb, sheet = sheet, table_bottom_row_style, rows = table_end_r+1, cols = table_start_c:table_end_c, gridExpand = TRUE)
   }
 
 #   addStyle(wb, sheet = 1, table_mid_row_style, rows = 12, cols = 1:6, gridExpand = TRUE)

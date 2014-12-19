@@ -19,7 +19,7 @@ print.tabular.xlsx <- function(wb, sheet, coords, tabular,
   #print(str(tabular))
   
   if ( is.null(caption(tabular)) ) { add.caption  <- FALSE}
-  if ( is.null(col.margin(tabular)) ) { col.margin  <- FALSE}
+  if ( is.null(col.margin(tabular)) ) { add.col.margin  <- FALSE}
   
   # make sure the object is a data.frame, convert if needed
   # -------------------------------------------------------

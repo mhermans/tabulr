@@ -16,12 +16,24 @@ print.tabular.xlsx <- function(wb, sheet, coords, tabular,
                                add.caption=TRUE, add.comment=TRUE, 
                                add.row.margin=TRUE, add.col.margin=TRUE,
                                style=None) {
+  #print(str(tabular))
   
   # make sure the object is a data.frame, convert if needed
   # -------------------------------------------------------
   
-  if ('matrix' %in% class(tabular) ) { tabular <- as.data.frame(tabular) }
-  if ('svytable' %in% class(tabular)) { tabular <- as.data.frame.matrix(tabular) }
+  if ('matrix' %in% class(tabular) ) { 
+    caption <- attr(tabular, 'caption')
+    tabular <- as.data.frame(tabular)
+    attr(tabular, 'caption') <- caption
+    rm(caption)
+  }
+  
+  if ('svytable' %in% class(tabular)) {
+    caption <- attr(tabular, 'caption')
+    tabular <- as.data.frame.matrix(tabular) 
+    attr(tabular, 'caption') <- caption
+    rm(caption)
+  }
   
   # dimensions
   # ----------

@@ -18,22 +18,23 @@ print.tabular.xlsx <- function(wb, sheet, coords, tabular,
                                style=None) {
   #print(str(tabular))
   
+  if ( is.null(caption(tabular)) ) { add.caption  <- FALSE}
+  if ( is.null(col.margin(tabular)) ) { col.margin  <- FALSE}
+  
   # make sure the object is a data.frame, convert if needed
   # -------------------------------------------------------
+
+  caption <- attr(tabular, 'caption')
+  col.margin <- attr(tabular, 'col.margin')
   
-  if ('matrix' %in% class(tabular) ) { 
-    caption <- attr(tabular, 'caption')
-    tabular <- as.data.frame(tabular)
-    attr(tabular, 'caption') <- caption
-    rm(caption)
-  }
+  if ('matrix' %in% class(tabular) ) { tabular <- as.data.frame(tabular) }
   
-  if ('svytable' %in% class(tabular)) {
-    caption <- attr(tabular, 'caption')
-    tabular <- as.data.frame.matrix(tabular) 
-    attr(tabular, 'caption') <- caption
-    rm(caption)
-  }
+  if ('svytable' %in% class(tabular)) { tabular <- as.data.frame.matrix(tabular) }
+  
+  attr(tabular, 'caption') <- caption
+  attr(tabular, 'col.margin') <- col.margin
+  rm(caption, col.margin)
+  
   
   # dimensions
   # ----------
@@ -120,7 +121,7 @@ print.tabular.xlsx <- function(wb, sheet, coords, tabular,
   # -----------------------------------------------
   
   if (add.caption) {
-    caption_text <- 'Table 1: This is a very long static table caption that needs to be fixed with a variable input (in %)'
+    caption_text <- caption(tabular)
     
     # add row contents
     # ----------------
@@ -160,7 +161,7 @@ print.tabular.xlsx <- function(wb, sheet, coords, tabular,
   }
   
   if (add.col.margin) {
-    col.margin.contents <- t(rep(100, ncol(tabular))) # TODO, parametriseer
+    col.margin.contents <- t(as.data.frame(as.vector(col.margin(tabular))))
     
     writeData(
       wb = wb, sheet = sheet, startCol = col_margin_c, startRow = col_margin_r,

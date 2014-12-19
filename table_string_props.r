@@ -34,7 +34,7 @@ caption.matrix <- function(x,...) {
 # data.frame
 # ------
 
-"caption<-data.frame" <- function(x,value) {
+"caption<-.data.frame" <- function(x,value) {
   if (length(value)>2)
     stop("\"caption\" must have length 1 or 2")
   attr(x,"caption") <- value
@@ -44,6 +44,49 @@ caption.matrix <- function(x,...) {
 caption.data.frame <- function(x,...) {
   return(attr(x,"caption",exact=TRUE))
 }
+
+
+# MARGIN FUNCTIONS
+# ================
+
+# table
+# -----
+
+"col.margin<-" <- function(x,value) UseMethod("col.margin<-")
+"col.margin<-.table" <- function(x,value) {
+  attr(x,"col.margin") <- value
+  return(x)
+}
+col.margin <- function(x,...) UseMethod("col.margin")
+col.margin.table <- function(x,...) {
+  return(attr(x,"col.margin",exact=TRUE))
+}
+
+# matrix
+# ------
+
+"col.margin<-.matrix" <- function(x,value) {
+  attr(x,"col.margin") <- value
+  return(x)
+}
+
+col.margin.matrix <- function(x,...) {
+  return(attr(x,"col.margin",exact=TRUE))
+}
+
+
+# data.frame
+# ------
+
+"col.margin<-data.frame" <- function(x,value) {
+  attr(x,"col.margin") <- value
+  return(x)
+}
+
+col.margin.data.frame <- function(x,...) {
+  return(attr(x,"col.margin",exact=TRUE))
+}
+
 
 # multilingual captions
 # options("tabular.strings.lang" = "nl")

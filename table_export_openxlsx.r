@@ -154,7 +154,13 @@ print.tabular.xlsx <- function(wb, sheet, coords, tabular,
   # -------------------------------------
   
   if (add.row.margin) {
+    
     row.margin.contents <- row.margin(tabular)
+    
+    # if all are 100/99/101 -> normalize to 100 (ignore rounding error)
+    if ( max(abs(row.margin.contents - 100)) <= 1 ) {
+      row.margin.contents <- rep(100, length(row.margin.contents))
+    } 
     
     for (i in 1:length(row.margin.contents)) {
       writeData(
@@ -166,8 +172,17 @@ print.tabular.xlsx <- function(wb, sheet, coords, tabular,
   }
   
   if (add.col.margin) {
-    col.margin.contents <- t(as.data.frame(as.vector(col.margin(tabular))))
     
+    col.margin.contents <- col.margin(tabular)
+    
+    # if all are 100/99/101 -> normalize to 100 (ignore rounding error)
+    if ( max(abs(col.margin.contents - 100)) <= 1 ) {
+      col.margin.contents <- rep(100, length(col.margin.contents))
+    } 
+  
+    # vector needs to be in a (transposed) dataframe
+    col.margin.contents <- t(as.data.frame(as.vector( col.margin.contents)))
+      
     writeData(
       wb = wb, sheet = sheet, startCol = col_margin_c, startRow = col_margin_r,
       x = col.margin.contents, rowNames=FALSE, colNames=FALSE)  

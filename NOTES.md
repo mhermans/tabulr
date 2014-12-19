@@ -2,6 +2,13 @@
 
 Goal: robust Excel export for core two-dimenional tabular datastructures
 
+
+TODOs
+[ ] Add support for writing section headers to Excel (strings in tabulars list)
+[ ] Specify either sheet name or number
+[X] Row/col margins automatic rounding 101/99 -> 100
+[ ] Sweave file -> use caption() function
+
 tab1 <- svytable()
 caption(tab1) <- 'Tabel caption'
 

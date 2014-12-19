@@ -10,15 +10,16 @@ library(openxlsx)
 # * caption       # col onder of boven toevoegen, spanning?
 # * row.margin 		# col rechts toevoegen
 # * col.margin 		# row onder toevoegen
-# * comment			  # row onder toevoegen [italic?)
+# * footnote			  # row onder toevoegen [italic?)
 
 print.tabular.xlsx <- function(wb, sheet, coords, tabular, 
-                               add.caption=TRUE, add.comment=TRUE, 
+                               add.caption=TRUE, add.footnote=TRUE, 
                                add.row.margin=TRUE, add.col.margin=TRUE,
                                style=None) {
   #print(str(tabular))
   
   if ( is.null(caption(tabular)) ) { add.caption  <- FALSE}
+  if ( is.null(footnote(tabular)) ) { add.footnote  <- FALSE}
   if ( is.null(col.margin(tabular)) ) { add.col.margin  <- FALSE}
   if ( is.null(row.margin(tabular)) ) { add.row.margin  <- FALSE}
   
@@ -26,17 +27,18 @@ print.tabular.xlsx <- function(wb, sheet, coords, tabular,
   # -------------------------------------------------------
 
   caption <- attr(tabular, 'caption')
+  footnote <- attr(tabular, 'footnote')
   col.margin <- attr(tabular, 'col.margin')
   row.margin <- attr(tabular, 'row.margin')
   
   if ('matrix' %in% class(tabular) ) { tabular <- as.data.frame(tabular) }
-  
   if ('svytable' %in% class(tabular)) { tabular <- as.data.frame.matrix(tabular) }
   
   attr(tabular, 'caption') <- caption
+  attr(tabular, 'footnote') <- footnote
   attr(tabular, 'col.margin') <- col.margin
   attr(tabular, 'row.margin') <- row.margin
-  rm(caption, col.margin, row.margin)
+  rm(caption, col.margin, row.margin, footnote)
   
   
   # dimensions
@@ -49,7 +51,7 @@ print.tabular.xlsx <- function(wb, sheet, coords, tabular,
   #   5 data row          x   1 rowname col   + 3 ncol rows + 1 row margin col
   #   6 data row          x   1 rowname col   + 3 ncol rows + 1 row margin col
   #   7 col margin row    x   1 whitespace    + 3 ncol rows + 1 row margin col
-  #   8 comment row       x   [spanning comment columns]
+  #   8 footnote row       x   [spanning footnote columns]
   
   
   # determine position index of rows
@@ -79,18 +81,18 @@ print.tabular.xlsx <- function(wb, sheet, coords, tabular,
 
   if (add.col.margin == TRUE) { table_end_r <- table_end_r + 1 } 
   
-  # caption and comment are outside of table start-end dimensions?
+  # caption and footnote are outside of table start-end dimensions?
   
-  if ( add.comment == TRUE ) { 
-    comment_r <- data_end_r + 1 }
-  if ( add.col.margin == TRUE ) { comment_r <- col_margin_r + 1 }
+  if ( add.footnote == TRUE ) { 
+    footnote_r <- data_end_r + 1 }
+  if ( add.col.margin == TRUE ) { footnote_r <- col_margin_r + 1 }
 
   
   
 #   n_total_rows <- n_data_rows
 #   if (add.caption = TRUE) { n_total_rows + 1 }
 #   if (add.col.margin = TRUE) { n_total_rows + 1 }
-#   if (add.comment = TRUE) { n_total_rows + 1 }
+#   if (add.footnote = TRUE) { n_total_rows + 1 }
   
   # determine position index of cols
   # --------------------------------
@@ -129,7 +131,7 @@ print.tabular.xlsx <- function(wb, sheet, coords, tabular,
     # add row contents
     # ----------------
     
-    # row for comment is the most top one, i.e. table_start_r
+    # row for footnote is the most top one, i.e. table_start_r
     writeData(
       wb = wb, sheet = sheet, startCol = table_start_c, startRow = caption_r,
       x = caption_text, rowNames=FALSE, colNames=FALSE)
@@ -178,20 +180,20 @@ print.tabular.xlsx <- function(wb, sheet, coords, tabular,
   #   margin.table(tab)
   
   
-  # if comment, add additional row with comment
+  # if footnote, add additional row with footnote
   # -------------------------------------------
   
-  if (add.comment) {
-    comment.contents <- 'N = 1200 (NA = 100), chi^2 = 3, p 0.000. Gewogen steekproef ' # TODO, parametriseer
+  if (add.footnote) {
+    footnote.contents <- footnote(tabular)
     
     writeData(
-      wb = wb, sheet = sheet, startCol = table_start_c, startRow = comment_r,
-      x = comment.contents, rowNames=FALSE, colNames=FALSE)  
+      wb = wb, sheet = sheet, startCol = table_start_c, startRow = footnote_r,
+      x = footnote.contents, rowNames=FALSE, colNames=FALSE)  
     
-    comment_merge_width <- ifelse(7 - table_start_c >= 6, 6)
+    footnote_merge_width <- ifelse(7 - table_start_c >= 6, 6)
     mergeCells(wb, sheet=sheet, 
-               cols = table_start_c:comment_merge_width, 
-               rows = comment_r)
+               cols = table_start_c:footnote_merge_width, 
+               rows = footnote_r)
     
   } 
   

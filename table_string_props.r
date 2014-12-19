@@ -1,3 +1,52 @@
+# FOOTNOTE FUNCTIONS #
+# ================= #
+
+# don't override default comment function -> footnote
+
+# table
+# -----
+
+"footnote<-" <- function(x,value) UseMethod("footnote<-")
+"footnote<-.table" <- function(x,value) {
+  if (length(value)>2)
+    stop("\"footnote\" must have length 1 or 2")
+  attr(x,"footnote") <- value
+  return(x)
+}
+footnote <- function(x,...) UseMethod("footnote")
+footnote.table <- function(x,...) {
+  return(attr(x,"footnote",exact=TRUE))
+}
+
+# matrix
+# ------
+
+"footnote<-.matrix" <- function(x,value) {
+  if (length(value)>2)
+    stop("\"footnote\" must have length 1 or 2")
+  attr(x,"footnote") <- value
+  return(x)
+}
+
+footnote.matrix <- function(x,...) {
+  return(attr(x,"footnote",exact=TRUE))
+}
+
+
+# data.frame
+# ------
+
+"footnote<-.data.frame" <- function(x,value) {
+  if (length(value)>2)
+    stop("\"footnote\" must have length 1 or 2")
+  attr(x,"footnote") <- value
+  return(x)
+}
+
+footnote.data.frame <- function(x,...) {
+  return(attr(x,"footnote",exact=TRUE))
+}
+
 # CAPTION FUNCTIONS #
 # ================= #
 

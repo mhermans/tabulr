@@ -20,12 +20,14 @@ print.tabular.xlsx <- function(wb, sheet, coords, tabular,
   
   if ( is.null(caption(tabular)) ) { add.caption  <- FALSE}
   if ( is.null(col.margin(tabular)) ) { add.col.margin  <- FALSE}
+  if ( is.null(row.margin(tabular)) ) { add.row.margin  <- FALSE}
   
   # make sure the object is a data.frame, convert if needed
   # -------------------------------------------------------
 
   caption <- attr(tabular, 'caption')
   col.margin <- attr(tabular, 'col.margin')
+  row.margin <- attr(tabular, 'row.margin')
   
   if ('matrix' %in% class(tabular) ) { tabular <- as.data.frame(tabular) }
   
@@ -33,7 +35,8 @@ print.tabular.xlsx <- function(wb, sheet, coords, tabular,
   
   attr(tabular, 'caption') <- caption
   attr(tabular, 'col.margin') <- col.margin
-  rm(caption, col.margin)
+  attr(tabular, 'row.margin') <- row.margin
+  rm(caption, col.margin, row.margin)
   
   
   # dimensions
@@ -149,7 +152,7 @@ print.tabular.xlsx <- function(wb, sheet, coords, tabular,
   # -------------------------------------
   
   if (add.row.margin) {
-    row.margin.contents <- t(rep(100, nrow(tabular))) # TODO, parametriseer
+    row.margin.contents <- row.margin(tabular)
     
     for (i in 1:length(row.margin.contents)) {
       writeData(

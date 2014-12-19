@@ -46,8 +46,8 @@ caption.data.frame <- function(x,...) {
 }
 
 
-# MARGIN FUNCTIONS
-# ================
+# COL MARGIN FUNCTIONS
+# ====================
 
 # table
 # -----
@@ -78,13 +78,55 @@ col.margin.matrix <- function(x,...) {
 # data.frame
 # ------
 
-"col.margin<-data.frame" <- function(x,value) {
+"col.margin<-.data.frame" <- function(x,value) {
   attr(x,"col.margin") <- value
   return(x)
 }
 
 col.margin.data.frame <- function(x,...) {
   return(attr(x,"col.margin",exact=TRUE))
+}
+
+
+# ROW MARGIN FUNCTIONS
+# ====================
+
+# table
+# -----
+
+"row.margin<-" <- function(x,value) UseMethod("row.margin<-")
+"row.margin<-.table" <- function(x,value) {
+  attr(x,"row.margin") <- value
+  return(x)
+}
+row.margin <- function(x,...) UseMethod("row.margin")
+row.margin.table <- function(x,...) {
+  return(attr(x,"row.margin",exact=TRUE))
+}
+
+# matrix
+# ------
+
+"row.margin<-.matrix" <- function(x,value) {
+  attr(x,"row.margin") <- value
+  return(x)
+}
+
+row.margin.matrix <- function(x,...) {
+  return(attr(x,"row.margin",exact=TRUE))
+}
+
+
+# data.frame
+# ------
+
+"row.margin<-.data.frame" <- function(x,value) {
+  attr(x,"row.margin") <- value
+  return(x)
+}
+
+row.margin.data.frame <- function(x,...) {
+  return(attr(x,"row.margin",exact=TRUE))
 }
 
 
